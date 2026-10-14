@@ -47,13 +47,17 @@ public class StartingWindow {
         startButton.setPreferredSize(new Dimension(100, 36));
         UITheme.stylePrimaryButton(startButton);
         startButton.addActionListener(e -> {
-            frame.dispose();
-            new GameWindow();
+            setVisibility(false);
+            AppLauncher.getInstance().showGameWindow();
         });
         buttonWrapper.add(startButton);
         rootPanel.add(buttonWrapper, BorderLayout.EAST);
 
         frame.setContentPane(rootPanel);
         frame.setVisible(true);
+    }
+
+    public void setVisibility(boolean visibility) {
+        frame.setVisible(visibility);
     }
 }

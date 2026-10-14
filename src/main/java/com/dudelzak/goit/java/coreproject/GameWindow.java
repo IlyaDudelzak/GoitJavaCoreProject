@@ -16,8 +16,8 @@ public class GameWindow {
     JTextArea historyArea;
     JButton confirmButton, testButton, surrenderButton;
 
-    public GameWindow() {
-        this.manager = new GameManager();
+    public GameWindow(GameManager manager) {
+        this.manager = manager;
 
         frame = new JFrame("Cities Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -127,7 +127,7 @@ public class GameWindow {
                 }
 
                 if (result.gameEnd()) {
-                    new StartingWindow();
+                    AppLauncher.getInstance().showStartWindow();
                     frame.dispose();
                 }
             }
@@ -138,7 +138,7 @@ public class GameWindow {
         surrenderButton.addActionListener(e -> {
             MoveResult result = manager.processMove("give up");
             if (result.gameEnd()) {
-                new StartingWindow();
+                AppLauncher.getInstance().showStartWindow();
                 frame.dispose();
             }
         });
@@ -150,5 +150,9 @@ public class GameWindow {
         inputField.setText(manager.storage.getNameByPlayerMove(
                 manager.lastComputerMove.isEmpty() ? "starter" : manager.lastComputerMove, false));
         confirmButton.doClick();
+    }
+
+    private void dispose() {
+        frame.dispose();
     }
 }
