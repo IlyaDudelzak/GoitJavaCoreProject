@@ -106,9 +106,9 @@ public class GameWindow {
         frame.add(bottomPanel, BorderLayout.SOUTH);
 
         // Event listeners
-        inputField.addActionListener(e -> confirmButton.doClick());
+        inputField.addActionListener(_ -> confirmButton.doClick());
 
-        confirmButton.addActionListener(e -> {
+        confirmButton.addActionListener(_ -> {
             String playerText = inputField.getText().trim();
             if (!playerText.isEmpty()) {
                 MoveResult result = manager.processMove(playerText);
@@ -128,18 +128,18 @@ public class GameWindow {
 
                 if (result.gameEnd()) {
                     AppLauncher.getInstance().showStartWindow();
-                    frame.dispose();
+                    dispose();
                 }
             }
         });
 
-        testButton.addActionListener(e -> test());
+        testButton.addActionListener(_ -> test());
 
-        surrenderButton.addActionListener(e -> {
+        surrenderButton.addActionListener(_ -> {
             MoveResult result = manager.processMove("give up");
             if (result.gameEnd()) {
                 AppLauncher.getInstance().showStartWindow();
-                frame.dispose();
+                dispose();
             }
         });
 
@@ -152,7 +152,7 @@ public class GameWindow {
         confirmButton.doClick();
     }
 
-    private void dispose() {
+    public void dispose() {
         frame.dispose();
     }
 }

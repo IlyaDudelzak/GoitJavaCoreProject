@@ -14,7 +14,6 @@ public class UITheme {
 
     // Modern color palette
     public static final Color COLOR_PRIMARY = new Color(37, 99, 235);       // #2563EB Vibrant Blue
-    public static final Color COLOR_PRIMARY_HOVER = new Color(29, 78, 216); // #1D4ED8 Darker Blue
     public static final Color COLOR_SECONDARY = new Color(100, 116, 139);   // #64748B Slate Grey
     public static final Color COLOR_DANGER = new Color(220, 38, 38);        // #DC2626 Red
     public static final Color COLOR_BACKGROUND = new Color(248, 250, 252);  // #F8FAFC Soft off-white

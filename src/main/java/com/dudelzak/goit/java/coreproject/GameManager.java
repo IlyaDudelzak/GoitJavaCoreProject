@@ -1,7 +1,6 @@
 package com.dudelzak.goit.java.coreproject;
 
 import javax.swing.*;
-import java.util.Locale;
 
 public class GameManager {
     CityNameStorage storage;

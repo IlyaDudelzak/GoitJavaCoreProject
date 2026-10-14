@@ -46,7 +46,7 @@ public class StartingWindow {
         startButton = new JButton("Start");
         startButton.setPreferredSize(new Dimension(100, 36));
         UITheme.stylePrimaryButton(startButton);
-        startButton.addActionListener(e -> {
+        startButton.addActionListener(_ -> {
             setVisibility(false);
             AppLauncher.getInstance().showGameWindow();
         });
