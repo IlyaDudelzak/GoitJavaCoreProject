@@ -4,12 +4,17 @@ import java.util.List;
 import java.util.Random;
 
 public class CityNameStorage {
-    public static Random random = new Random();
+    private final Random random;
 
     private final List<String> cityNamesList;
 
     public CityNameStorage() {
+        this(new Random());
+    }
+
+    public CityNameStorage(Random random) {
         this.cityNamesList = CityReader.getCities();
+        this.random = random;
     }
 
     public boolean isEmpty() {
@@ -41,7 +46,16 @@ public class CityNameStorage {
         return getNameByFirstLetter(targetLetter, remove);
     }
 
+    public boolean containsName(String name) {
+        String normalized = Utils.normalizeCityName(name);
+        if (normalized.isEmpty()) return false;
+        return cityNamesList.stream()
+                .anyMatch(cityName -> Utils.normalizeCityName(cityName).equals(normalized));
+    }
+
     public boolean removeCityName(String name) {
-        return cityNamesList.removeIf(cityName -> cityName.equalsIgnoreCase(name.trim()));
+        String normalized = Utils.normalizeCityName(name);
+        if (normalized.isEmpty()) return false;
+        return cityNamesList.removeIf(cityName -> Utils.normalizeCityName(cityName).equals(normalized));
     }
 }

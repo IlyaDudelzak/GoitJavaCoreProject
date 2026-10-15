@@ -14,7 +14,6 @@ public class UITheme {
 
     // Modern color palette
     public static final Color COLOR_PRIMARY = new Color(37, 99, 235);       // #2563EB Vibrant Blue
-    public static final Color COLOR_SECONDARY = new Color(100, 116, 139);   // #64748B Slate Grey
     public static final Color COLOR_DANGER = new Color(220, 38, 38);        // #DC2626 Red
     public static final Color COLOR_BACKGROUND = new Color(248, 250, 252);  // #F8FAFC Soft off-white
     public static final Color COLOR_SURFACE = Color.WHITE;
@@ -68,18 +67,6 @@ public class UITheme {
         button.setBorder(new CompoundBorder(
                 new LineBorder(COLOR_PRIMARY, 1, true),
                 new EmptyBorder(8, 14, 8, 14)
-        ));
-    }
-
-    public static void styleSecondaryButton(JButton button) {
-        button.setFont(FONT_BUTTON);
-        button.setBackground(COLOR_SECONDARY);
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        button.setBorder(new CompoundBorder(
-                new LineBorder(COLOR_SECONDARY, 1, true),
-                new EmptyBorder(8, 12, 8, 12)
         ));
     }
 

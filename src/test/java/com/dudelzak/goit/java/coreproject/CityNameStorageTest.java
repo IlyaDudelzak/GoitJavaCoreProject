@@ -35,4 +35,14 @@ class CityNameStorageTest {
         assertNotNull(city);
         assertTrue(city.toUpperCase().startsWith("P"), "Should start with 'P', got: " + city);
     }
+
+    @Test
+    @DisplayName("removeCityName and containsName should work with normalized variations")
+    void testNormalizedLookupAndRemoval() {
+        CityNameStorage storage = new CityNameStorage();
+        assertTrue(storage.containsName("New   York"));
+        assertTrue(storage.containsName("new york"));
+        assertTrue(storage.removeCityName("  NEW   YORK  "));
+        assertFalse(storage.containsName("New York"));
+    }
 }

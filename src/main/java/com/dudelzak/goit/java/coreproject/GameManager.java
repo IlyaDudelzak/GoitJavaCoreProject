@@ -3,9 +3,9 @@ package com.dudelzak.goit.java.coreproject;
 import javax.swing.*;
 
 public class GameManager {
-    CityNameStorage storage;
-    String lastComputerMove = "";
-    int compScore = 0, playerScore = 0;
+    private final CityNameStorage storage;
+    private String lastComputerMove = "";
+    private int compScore = 0, playerScore = 0;
 
 
     public GameManager() {
@@ -17,17 +17,23 @@ public class GameManager {
     }
 
     public MoveResult makeMove(String playerMove) {
-        if(playerMove.toLowerCase().contains("give up") || playerMove.toLowerCase().contains("здаюсь")) return MoveResult.PLAYER_GAVE_UP;
+        if (playerMove == null) return MoveResult.NO_MOVE;
+        String trimmed = playerMove.trim();
+        if (trimmed.equalsIgnoreCase("give up")
+                || trimmed.equalsIgnoreCase("здаюсь")
+                || trimmed.equalsIgnoreCase("сдаюсь")) {
+            return MoveResult.PLAYER_GAVE_UP;
+        }
         String expectedLetter = Utils.getValidLastLetter(lastComputerMove);
-        if(lastComputerMove.isEmpty() || playerMove.toUpperCase().startsWith(expectedLetter)) {
-            if (storage.removeCityName(playerMove)) {
+        if(lastComputerMove.isEmpty() || trimmed.toUpperCase().startsWith(expectedLetter)) {
+            if (storage.removeCityName(trimmed)) {
                 if (storage.isEmpty()) return MoveResult.OUT_OF_NAMES;
                 String computerMove = storage.getNameByPlayerMove(playerMove, false);
                 if (computerMove != null) {
                     String possibleNextPlayerMove = storage.getNameByPlayerMove(computerMove, false);
+                    storage.removeCityName(computerMove);
+                    lastComputerMove = computerMove;
                     if(possibleNextPlayerMove != null) {
-                        storage.removeCityName(computerMove);
-                        lastComputerMove = computerMove;
                         return MoveResult.NORMAL;
                     } else {
                         return MoveResult.NO_NAME_FOR_FINAL_COMP_LETTER;
@@ -49,25 +55,44 @@ public class GameManager {
 
         MoveResult result = makeMove(playerMove);
 
+        if (result.shouldContinue() || result.gameEnd()) {
+            if(result != MoveResult.PLAYER_GAVE_UP)
+                playerScore += playerMove.length() * playerMove.length();
+            if(!result.playerWon() && result != MoveResult.PLAYER_GAVE_UP)
+                compScore += lastComputerMove.length() * lastComputerMove.length();
+        }
+
         if (result.gameEnd()) {
             playerScore += result.playerWon() ? 100 : 0;
             compScore += result.playerWon() ? 0 : 100;
-            JOptionPane.showMessageDialog(
-                    null,
-                    result.getMessage() +
-                            "\nYour score: " + playerScore +
-                            "\nComputer score: " + compScore,
-                    "Game Over",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
+            if (!java.awt.GraphicsEnvironment.isHeadless()) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        result.getMessage() +
+                                "\nYour score: " + playerScore +
+                                "\nComputer score: " + compScore,
+                        "Game Over",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            }
         } else if (result.showMessage()) {
-            JOptionPane.showMessageDialog(null, result.getMessage());
+            if (!java.awt.GraphicsEnvironment.isHeadless()) {
+                JOptionPane.showMessageDialog(null, result.getMessage());
+            }
         }
 
-        if (result.shouldContinue()) {
-            playerScore += playerMove.length() * playerMove.length();
-            compScore += lastComputerMove.length() * lastComputerMove.length();
-        }
         return result;
+    }
+
+    public int getCompScore() {
+        return compScore;
+    }
+
+    public int getPlayerScore() {
+        return playerScore;
+    }
+
+    public String getLastComputerMove() {
+        return lastComputerMove;
     }
 }

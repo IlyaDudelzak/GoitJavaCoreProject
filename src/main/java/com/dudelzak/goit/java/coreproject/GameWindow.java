@@ -14,7 +14,7 @@ public class GameWindow {
     JTextField inputField;
     JLabel statusLabel, currentLetterLabel;
     JTextArea historyArea;
-    JButton confirmButton, testButton, surrenderButton;
+    JButton confirmButton, surrenderButton;
 
     public GameWindow(GameManager manager) {
         this.manager = manager;
@@ -90,15 +90,10 @@ public class GameWindow {
         JPanel actionButtonsPanel = new JPanel(new GridLayout(1, 2, 10, 0));
         actionButtonsPanel.setOpaque(false);
 
-        testButton = new JButton("Auto-move (Test)");
-        testButton.setPreferredSize(new Dimension(140, 34));
-        UITheme.styleSecondaryButton(testButton);
-
         surrenderButton = new JButton("Surrender");
         surrenderButton.setPreferredSize(new Dimension(140, 34));
         UITheme.styleDangerButton(surrenderButton);
 
-        actionButtonsPanel.add(testButton);
         actionButtonsPanel.add(surrenderButton);
 
         bottomPanel.add(inputPanel, BorderLayout.NORTH);
@@ -106,23 +101,23 @@ public class GameWindow {
         frame.add(bottomPanel, BorderLayout.SOUTH);
 
         // Event listeners
-        inputField.addActionListener(_ -> confirmButton.doClick());
+        inputField.addActionListener(e -> confirmButton.doClick());
 
-        confirmButton.addActionListener(_ -> {
+        confirmButton.addActionListener(e -> {
             String playerText = inputField.getText().trim();
             if (!playerText.isEmpty()) {
                 MoveResult result = manager.processMove(playerText);
 
-                if (result.shouldContinue() && !result.playerWon()) {
+                if (result.shouldContinue()) {
                     moveCount++;
                     historyArea.append("You: " + playerText + "\n");
-                    historyArea.append("Computer: " + manager.lastComputerMove + "\n\n");
+                    historyArea.append("Computer: " + manager.getLastComputerMove() + "\n\n");
 
                     historyArea.setCaretPosition(historyArea.getDocument().getLength());
 
-                    String nextChar = Utils.getValidLastLetter(manager.lastComputerMove);
+                    String nextChar = Utils.getValidLastLetter(manager.getLastComputerMove());
                     currentLetterLabel.setText("Your next city must start with: " + (nextChar.isEmpty() ? "?" : nextChar));
-                    statusLabel.setText("Turns: " + moveCount + "  |  Score: You " + manager.playerScore + " — Comp " + manager.compScore);
+                    statusLabel.setText("Turns: " + moveCount + "  |  Score: You " + manager.getPlayerScore() + " — Comp " + manager.getCompScore());
                     inputField.setText("");
                 }
 
@@ -133,9 +128,8 @@ public class GameWindow {
             }
         });
 
-        testButton.addActionListener(_ -> test());
 
-        surrenderButton.addActionListener(_ -> {
+        surrenderButton.addActionListener(e -> {
             MoveResult result = manager.processMove("give up");
             if (result.gameEnd()) {
                 AppLauncher.getInstance().showStartWindow();
@@ -144,12 +138,6 @@ public class GameWindow {
         });
 
         frame.setVisible(true);
-    }
-
-    private void test() {
-        inputField.setText(manager.storage.getNameByPlayerMove(
-                manager.lastComputerMove.isEmpty() ? "starter" : manager.lastComputerMove, false));
-        confirmButton.doClick();
     }
 
     public void dispose() {

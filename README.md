@@ -25,7 +25,7 @@ A simple desktop "Cities" word-chain game built in Java using Swing. Play agains
 
 ## Requirements
 
-- **Java (JDK) 17** or higher.
+- **Java (JDK) 21** (LTS) or higher (project build is explicitly configured with Java 21 via Gradle Toolchain).
 
 ---
 

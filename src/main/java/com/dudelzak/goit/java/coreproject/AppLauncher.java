@@ -11,7 +11,7 @@ public class AppLauncher {
         return instance;
     }
 
-    static void main() {
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             UITheme.setupTheme();
             getInstance().showStartWindow();

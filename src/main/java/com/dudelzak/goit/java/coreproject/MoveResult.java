@@ -1,7 +1,7 @@
 package com.dudelzak.goit.java.coreproject;
 
 public enum MoveResult {
-    NO_MOVE(true, false, true, null),
+    NO_MOVE(false, false, false, null),
     NORMAL(true, false, false, null),
     NO_SUCH_NAME(false, false, false, "No such city name, or repeat"),
     FIRST_CHAR_PMOVE_NOT_FINAL_COMPMOVE_CHAR(false, false, false, "The first character of your guess does not match the final character of computer`s last move."),
@@ -27,5 +27,5 @@ public enum MoveResult {
     public boolean gameEnd() { return gameEnd; }
     public boolean playerWon() { return playerWon; }
     public String getMessage() { return message; }
-    public boolean showMessage() { return !shouldContinue && !gameEnd; }
+    public boolean showMessage() { return !gameEnd && message != null; }
 }

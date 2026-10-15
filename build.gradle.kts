@@ -5,6 +5,12 @@ plugins {
 group = "com.dudelzak.goit.java.coreproject"
 version = "1.0-SNAPSHOT"
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
 repositories {
     mavenCentral()
 }
@@ -18,6 +24,7 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+    systemProperty("java.awt.headless", "true")
 }
 
 tasks.jar {

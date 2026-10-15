@@ -45,4 +45,28 @@ public class Utils {
         }
         return "";
     }
+
+    /**
+     * Normalizes a city name for robust comparison and lookup:
+     * - Trims leading/trailing whitespace
+     * - Unifies various apostrophes ('’'`´ʼʻ) to standard single quote '
+     * - Unifies various hyphens and dashes (–—−‐‑) to standard hyphen -
+     * - Removes redundant spaces around hyphens
+     * - Collapses multiple whitespace characters into a single space
+     * - Converts to lowercase using Locale.ROOT
+     *
+     * @param name raw city name
+     * @return normalized canonical city name
+     */
+    public static String normalizeCityName(String name) {
+        if (name == null || name.isBlank()) {
+            return "";
+        }
+        return name.trim()
+                .replaceAll("[’'`´ʼʻ]", "'")
+                .replaceAll("[–—−‐‑]", "-")
+                .replaceAll("\\s*-\\s*", "-")
+                .replaceAll("\\s+", " ")
+                .toLowerCase(java.util.Locale.ROOT);
+    }
 }

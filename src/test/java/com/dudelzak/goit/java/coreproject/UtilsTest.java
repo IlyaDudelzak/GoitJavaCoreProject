@@ -59,4 +59,19 @@ class UtilsTest {
         assertEquals("", Utils.getValidLastLetter("---'''123"));
         assertEquals("", Utils.getValidLastLetter("ььь"));
     }
+
+    @ParameterizedTest(name = "normalizeCityName(\"{0}\") should yield \"{1}\"")
+    @CsvSource({
+            "'  New   York  ', new york",
+            "'Xi''an', xi'an",
+            "'Xi’an', xi'an",
+            "'Xi`an', xi'an",
+            "'Rio - de - Janeiro', rio-de-janeiro",
+            "'Rio — de — Janeiro', rio-de-janeiro",
+            "'  TOKYO  ', tokyo"
+    })
+    @DisplayName("normalizeCityName should handle multiple spaces, various apostrophes, and dashes")
+    void testNormalizeCityName(String input, String expected) {
+        assertEquals(expected, Utils.normalizeCityName(input));
+    }
 }
